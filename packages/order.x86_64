@@ -1,0 +1,17 @@
+pistat
+mkinitcpio-rootdelay
+janus-gateway-pikvm
+watchdog
+python-pyserial-asyncio
+python-pyghmi
+python-spidev
+python-raspberry-gpio
+python-smbus2
+python-pyrad
+raspberrypi-io-access
+ustreamer
+kvmd
+kvmd-webterm
+kvmd-oled
+kvmd-fan
+edid-decode
