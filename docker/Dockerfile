@@ -2,13 +2,22 @@
 FROM archlinux/archlinux:base
 
 # 安装一些必要的软件包
+RUN cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+RUN echo "Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 RUN pacman -Syu --noconfirm  && \
-    pacman --needed --noconfirm -S git-core base base-devel man vim colordiff tree wget unzip unrar lsof bc dosfstools rsync xz && \
-    pacman --needed --noconfirm -S pacman && \
-    pacman-db-upgrade && \
-    pacman-key --init && \
-    pacman -Syu --noconfirm
-    
+    pacman --needed --noconfirm -S git base base-devel man vim colordiff tree wget unzip unrar lsof bc dosfstools rsync xz && \
+    # mkinitcpio-rootdelay 
+    pacman --needed --noconfirm -S mkinitcpio && \
+    # janus-gateway-pikvm
+    pacman --needed --noconfirm -S libconfig libwebsockets libnice libsrtp cmake gengetopt && \
+    # python-pyserial-asyncio
+    pacman --needed --noconfirm -S python python-pyserial python-setuptools && \
+    # python-pyghmi
+    pacman --needed --noconfirm -S python-cryptography python-dateutil python-six python-distribute && \
+    # libdrm alsa-lib opus speexdsp libjpeg libbsd libgpiod
+    pacman --needed --noconfirm -S libdrm alsa-lib opus speexdsp libjpeg libbsd libgpiod && \
+    # kvmd
+    pacman --needed --noconfirm -S python-yaml python-aiohttp python-aiofiles python-async-lru python-passlib python-pyotp python-qrcode python-periphery python-setproctitle python-psutil python-netifaces python-systemd python-dbus python-dbus-next python-pygments python-pam python-pillow python-xlib libxkbcommon python-hidapi python-ldap python-zstandard python-mako freetype2 v4l-utils nginx-mainline dnsmasq ipmitool certbot openssl-1.1 dos2unix parted openssh wpa_supplicant run-parts hostapd python-pip
 # 清理缓存以减小镜像体积
 RUN pacman -Scc --noconfirm
 
@@ -24,7 +33,5 @@ RUN \
     --create-home --home-dir /home/$USERNAME \
     --comment "Pikvm buildbot" \
     --gid $USERNAME --shell /bin/bash $USERNAME && \
-    chown $USERNAME:$USERNAME /home/$USERNAME
-
-# 启动shell
-CMD ["/bin/bash"]
+    chown $USERNAME:$USERNAME /home/$USERNAME && \
+    echo "$USERNAME:$USERNAME" | chpasswd
