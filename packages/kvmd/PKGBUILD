@@ -3,32 +3,7 @@
 
 
 _variants=(
-	v0-hdmi:zero2w
-	v0-hdmi:rpi2
-	v0-hdmi:rpi3
-
-	v0-hdmiusb:zero2w
-	v0-hdmiusb:rpi2
 	v0-hdmiusb:rpi3
-
-	v1-hdmi:zero2w
-	v1-hdmi:rpi2
-	v1-hdmi:rpi3
-
-	v1-hdmiusb:zero2w
-	v1-hdmiusb:rpi2
-	v1-hdmiusb:rpi3
-
-	v2-hdmi:zero2w
-	v2-hdmi:rpi3
-	v2-hdmi:rpi4
-
-	v2-hdmiusb:rpi4
-
-	v3-hdmi:rpi4
-
-	v4mini-hdmi:rpi4
-	v4plus-hdmi:rpi4
 )
 
 

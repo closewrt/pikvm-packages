@@ -11,6 +11,4 @@ raspberrypi-io-access
 ustreamer
 kvmd
 kvmd-webterm
-kvmd-oled
-kvmd-fan
 edid-decode

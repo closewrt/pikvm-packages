@@ -5,23 +5,8 @@ FROM archlinux/archlinux:base
 RUN cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 RUN echo "Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 RUN pacman -Syu --noconfirm  && \
-    pacman --needed --noconfirm -S git base base-devel man vim colordiff tree wget unzip unrar lsof bc dosfstools rsync xz && \
-    # mkinitcpio-rootdelay 
-    pacman --needed --noconfirm -S mkinitcpio && \
-    # janus-gateway-pikvm
-    pacman --needed --noconfirm -S libconfig libwebsockets libnice libsrtp cmake gengetopt && \
-    # python-pyserial-asyncio
-    pacman --needed --noconfirm -S python python-pyserial python-setuptools && \
-    # python-pyghmi
-    pacman --needed --noconfirm -S python-cryptography python-dateutil python-six python-distribute && \
-    # python-pyrad
-    pacman --needed --noconfirm -S python-netaddr && \
-    # libdrm alsa-lib opus speexdsp libjpeg libbsd libgpiod
-    pacman --needed --noconfirm -S libdrm alsa-lib opus speexdsp libjpeg libbsd libgpiod && \
-    # kvmd
-    pacman --needed --noconfirm -S tesseract python-yaml python-aiohttp python-aiofiles python-async-lru python-passlib python-pyotp python-qrcode python-periphery python-setproctitle python-psutil python-netifaces python-systemd python-dbus python-dbus-next python-pygments python-pam python-pillow python-xlib libxkbcommon python-hidapi python-ldap python-zstandard python-mako freetype2 v4l-utils nginx-mainline dnsmasq ipmitool certbot openssl-1.1 dos2unix parted openssh wpa_supplicant run-parts hostapd python-pip && \
-    # kvmd-webterm
-    pacman --needed --noconfirm -S ttyd inetutils
+    pacman --needed --noconfirm -S git base base-devel wget unzip unrar xz
+
 # 清理缓存以减小镜像体积
 RUN pacman -Scc --noconfirm
 

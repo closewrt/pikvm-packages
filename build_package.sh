@@ -1,22 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-BOARD=x86_64
-BUILD_DIR = ./build/$(BOARD)
+ROOT_PATH=${PWD}
+BUILD_DIR=${ROOT_PATH}/build/x86_64
+mkdir -p ${BUILD_DIR}
 
-mkdir -p $(BUILD_DIR)
-
-cat packages/order.$BOARD | while read line; do
+cat ${ROOT_PATH}/packages/order.x86_64 | while read line; do
     echo $line
-    cd packages/$line
-    makepkg -f $line
-    if [ $line == "kvmd" ]; then
-        sudo pacman -U kvmd-3.308-1-any.pkg.tar.* --noconfirm
-        sudo pacman -U kvmd-platform-v0-hdmiusb-rpi3-3.308-1-any.pkg.tar.* --noconfirm
-        cp $line*.pkg.tar.* $BUILD_DIR
-    else
-        sudo pacman -U $line*.pkg.tar.* --noconfirm
-        cp $line*.pkg.tar.* $BUILD_DIR
-    fi
-
+    cd ${ROOT_PATH}/packages/$line
+    # -s 或 --syncdeps：Install missing dependencies with pacman
+    # -f 或 --force：Overwrite existing package
+    # -c 或 --clean：Clean up work files after build
+    # --noconfirm: Do not ask for confirmation when resolving dependencies
+    makepkg -sfc --noconfirm $line
+    cp $line*.pkg.tar.* ${BUILD_DIR}
+    sudo pacman -U $line*.pkg.tar.* --noconfirm    
+    cp $line*.pkg.tar.* ${BUILD_DIR}
     cd -
 done
