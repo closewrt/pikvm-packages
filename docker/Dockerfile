@@ -14,10 +14,14 @@ RUN pacman -Syu --noconfirm  && \
     pacman --needed --noconfirm -S python python-pyserial python-setuptools && \
     # python-pyghmi
     pacman --needed --noconfirm -S python-cryptography python-dateutil python-six python-distribute && \
+    # python-pyrad
+    pacman --needed --noconfirm -S python-netaddr && \
     # libdrm alsa-lib opus speexdsp libjpeg libbsd libgpiod
     pacman --needed --noconfirm -S libdrm alsa-lib opus speexdsp libjpeg libbsd libgpiod && \
     # kvmd
-    pacman --needed --noconfirm -S python-yaml python-aiohttp python-aiofiles python-async-lru python-passlib python-pyotp python-qrcode python-periphery python-setproctitle python-psutil python-netifaces python-systemd python-dbus python-dbus-next python-pygments python-pam python-pillow python-xlib libxkbcommon python-hidapi python-ldap python-zstandard python-mako freetype2 v4l-utils nginx-mainline dnsmasq ipmitool certbot openssl-1.1 dos2unix parted openssh wpa_supplicant run-parts hostapd python-pip
+    pacman --needed --noconfirm -S tesseract python-yaml python-aiohttp python-aiofiles python-async-lru python-passlib python-pyotp python-qrcode python-periphery python-setproctitle python-psutil python-netifaces python-systemd python-dbus python-dbus-next python-pygments python-pam python-pillow python-xlib libxkbcommon python-hidapi python-ldap python-zstandard python-mako freetype2 v4l-utils nginx-mainline dnsmasq ipmitool certbot openssl-1.1 dos2unix parted openssh wpa_supplicant run-parts hostapd python-pip && \
+    # kvmd-webterm
+    pacman --needed --noconfirm -S ttyd inetutils
 # 清理缓存以减小镜像体积
 RUN pacman -Scc --noconfirm
 
@@ -35,3 +39,10 @@ RUN \
     --gid $USERNAME --shell /bin/bash $USERNAME && \
     chown $USERNAME:$USERNAME /home/$USERNAME && \
     echo "$USERNAME:$USERNAME" | chpasswd
+
+# 安装sudo包
+RUN pacman -Syu --noconfirm sudo
+# 添加用户到wheel组，这个组在Arch Linux中通常有sudo权限
+RUN usermod -aG wheel $USERNAME
+# 为了避免编辑/etc/sudoers文件，我们可以创建一个新的文件来设置权限
+RUN echo "$USERNAME ALL=(ALL) ALL" | EDITOR="tee -a" visudo
